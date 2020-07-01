@@ -21,7 +21,8 @@ function getPathSegment(pathObj: any) {
 function getLineSegment() {
 	const activeEditor = vscode.window.activeTextEditor;
 	if (activeEditor) {
-		return "#" + activeEditor.selection.active.line;
+		let line = (activeEditor.selection.active.line+1);
+		return "#" + line;
 	}
 	return "";
 }

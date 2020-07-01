@@ -1,7 +1,8 @@
 {
 	"name": "fuchsia-git-helper",
 	"displayName": "fuchsia_git_helper",
-	"description": "",
+	"description": "Adds 'Open in Gitiles' options to the context menu",
+	"publisher": "jwing@google.com",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.45.0"
@@ -45,7 +46,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.46.0",
+		"@types/vscode": "^1.45.0",
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
