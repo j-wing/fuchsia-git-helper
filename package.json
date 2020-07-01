@@ -1,9 +1,10 @@
 {
 	"name": "fuchsia-git-helper",
-	"displayName": "fuchsia_git_helper",
+	"displayName": "Fuchsia.git Helper",
 	"description": "Adds 'Open in Gitiles' options to the context menu",
 	"publisher": "jwing",
-	"version": "0.0.1",
+	"repository": "https://github.com/jordonwii/fuchsia-git-helper",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.45.0"
 	},
