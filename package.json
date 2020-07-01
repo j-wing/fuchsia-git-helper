@@ -12,7 +12,9 @@
 	],
 	"activationEvents": [
 		"onCommand:fuchsia-git-helper.openAtRevision",
-		"onCommand:fuchsia-git-helper.openAtMaster"
+		"onCommand:fuchsia-git-helper.openAtMaster",
+		"onCommand:fuchsia-git-helper.openAtRevisionFromExplorer",
+		"onCommand:fuchsia-git-helper.openAtMasterFromExplorer"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -24,6 +26,14 @@
 			{
 				"command": "fuchsia-git-helper.openAtMaster",
 				"title": "Open in Gitiles (master)"
+			},
+			{
+				"command": "fuchsia-git-helper.openAtRevisionFromExplorer",
+				"title": "Open in Gitiles (current revision)"
+			},
+			{
+				"command": "fuchsia-git-helper.openAtMasterFromExplorer",
+				"title": "Open in Gitiles (master)"
 			}
 		],
 		"menus": {
@@ -33,6 +43,14 @@
 				},
 				{
 					"command": "fuchsia-git-helper.openAtMaster"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "fuchsia-git-helper.openAtRevisionFromExplorer"
+				},
+				{
+					"command": "fuchsia-git-helper.openAtMasterFromExplorer"
 				}
 			]
 		}
