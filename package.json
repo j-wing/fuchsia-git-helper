@@ -2,7 +2,7 @@
 	"name": "fuchsia-git-helper",
 	"displayName": "fuchsia_git_helper",
 	"description": "Adds 'Open in Gitiles' options to the context menu",
-	"publisher": "jwing@google.com",
+	"publisher": "jwing",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.45.0"
