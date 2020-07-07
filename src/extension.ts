@@ -18,7 +18,6 @@ type ContextMenuCommandArg = {
 type CommandArg = ContextMenuCommandArg | undefined;
 
 function getPathSegment(arg: CommandArg) {
-	debugger;
 	let root = vscode.workspace.rootPath;
 
 	let fullPath =
