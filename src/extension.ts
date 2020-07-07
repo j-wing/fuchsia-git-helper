@@ -5,17 +5,28 @@
 import * as vscode from 'vscode';
 import { Commit, GitExtension } from "./git.d";
 
-
 const BASE = "https://fuchsia.googlesource.com/fuchsia/+/";
-const MASTER = "refs/heads/master"
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+const MASTER = "refs/heads/master";
 
-function getPathSegment(pathObj: any) {
-	let path = pathObj.path;
+// The object received when the extension is called from context-menu / right click
+type ContextMenuCommandArg = {
+	path: string,
+};
+
+// When the extension is called from context menu, we get a PathObj argument. When it is called
+// from the command palette, we get an unedfined argument
+type CommandArg = ContextMenuCommandArg | undefined;
+
+function getPathSegment(arg: CommandArg) {
 	let root = vscode.workspace.rootPath;
 
-	return path.slice(root?.length);
+	let fullPath =
+		arg?.path || // Try to use the passed in path, if available
+		vscode.window.activeTextEditor?.document.fileName || // Fallback to the active editor's path
+		root || // Fallback to the root of the workspace
+		'';
+
+	return fullPath.slice(root?.length);
 }
 
 function getLineSegment() {
@@ -27,8 +38,8 @@ function getLineSegment() {
 	return "";
 }
 
-function openAtRevision(pathObj: any, includeLineNumber: boolean) {
-	let cutPath = getPathSegment(pathObj);
+function openAtRevision(arg: CommandArg, includeLineNumber: boolean) {
+	let cutPath = getPathSegment(arg);
 	let line = "";
 	if (includeLineNumber) {
 		line = getLineSegment();
@@ -46,8 +57,8 @@ function openAtRevision(pathObj: any, includeLineNumber: boolean) {
 	});
 }
 
-function openAtMaster(pathObj: any, includeLineNumber: boolean) {
-	let cutPath = getPathSegment(pathObj);
+function openAtMaster(arg: CommandArg, includeLineNumber: boolean) {
+	let cutPath = getPathSegment(arg);
 	let line = "";
 	if (includeLineNumber) {
 		line = getLineSegment();
@@ -60,17 +71,17 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevision', (pathObj) => {
-		openAtRevision(pathObj, true);
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevision', (arg) => {
+		openAtRevision(arg, true);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionFromExplorer', (pathObj) => {
-		openAtRevision(pathObj, false);
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionFromExplorer', (arg) => {
+		openAtRevision(arg, false);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMaster', (pathObj) => {
-		openAtMaster(pathObj, true);
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMaster', (arg) => {
+		openAtMaster(arg, true);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterFromExplorer', (pathObj) => {
-		openAtMaster(pathObj, false);
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterFromExplorer', (arg) => {
+		openAtMaster(arg, false);
 	}));
 }
 

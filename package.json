@@ -53,6 +53,16 @@
 				{
 					"command": "fuchsia-git-helper.openAtMasterFromExplorer"
 				}
+			],
+			"commandPalette": [
+				{
+					"command": "fuchsia-git-helper.openAtRevisionFromExplorer",
+					"when": "false"
+				},
+				{
+					"command": "fuchsia-git-helper.openAtMasterFromExplorer",
+					"when": "false"
+				}
 			]
 		}
 	},
