@@ -6,10 +6,16 @@ import { allowedNodeEnvironmentFlags } from 'process';
 import * as vscode from 'vscode';
 import { Commit, GitExtension } from "./git.d";
 
-const BASE = "https://fuchsia.googlesource.com/fuchsia/+/";
-const MASTER = "refs/heads/master";
+const GITILES_BASE = "https://fuchsia.googlesource.com/fuchsia/+/";
+const GITILES_MASTER = "refs/heads/master";
+
+const OSSCS_BASE = "https://cs.opensource.google/fuchsia/fuchsia/+/master:";
+
 const CONFIG_ROOT = "fuchsia-git-helper";
 const FUCHSIA_ROOT_SETTING = "fuchsiaRoot";
+const VIEWER_SETTING = "codeViewer";
+const OSSCS = "osscs";
+const GITILES = "gitiles";
 
 // The object received when the extension is called from context-menu / right click
 type ContextMenuCommandArg = {
@@ -22,6 +28,38 @@ type CommandArg = ContextMenuCommandArg | undefined;
 
 function printFuchsiaRootError() {
 	console.error("couldn't find fuchsia root! try setting the", CONFIG_ROOT + "." + FUCHSIA_ROOT_SETTING, "setting.");
+}
+
+function makeGitilesUrl(path: string, hash: string | null, line: string | null): vscode.Uri {
+	if (hash === null) {
+		hash = GITILES_MASTER;
+	}
+
+	let uri = vscode.Uri.parse(GITILES_BASE + hash + path);
+	if (line !== null) {
+		uri = uri.with({fragment: line});
+	}
+	return uri;
+}
+function makeOssCsUrl(path: string, hash: string | null, line: string | null): vscode.Uri {
+	let url = OSSCS_BASE + path;
+	if (line !== null) {
+		url += ";l=" + line;
+	}
+	if (hash !== null) {
+		url += ";drc=" + hash;
+	}
+	return vscode.Uri.parse(url);
+}
+
+function makeUrl(path: string, hash: string | null, line: string | null): vscode.Uri {
+	let viewer: string | null | undefined = vscode.workspace.getConfiguration(CONFIG_ROOT).get(VIEWER_SETTING);
+	
+	if (viewer == GITILES) {
+		return makeGitilesUrl(path, hash, line);
+	} else {
+		return makeOssCsUrl(path, hash, line);
+	}
 }
 
 function getRoot(): vscode.Uri | undefined {
@@ -53,25 +91,25 @@ function getPathSegment(arg: CommandArg) {
 	return fullPath.slice(root?.length);
 }
 
-function getLineSegment() {
+function getLineSegment(): string | null {
 	const activeEditor = vscode.window.activeTextEditor;
 	if (activeEditor) {
 		let line = (activeEditor.selection.active.line + 1);
-		return "#" + line;
+		return line.toString();
 	}
-	return "";
+	return null;
 }
 
 function openAtRevision(arg: CommandArg, includeLineNumber: boolean) {
 	let cutPath = getPathSegment(arg);
-	let line = "";
+	let line: string | null = null;
 	if (includeLineNumber) {
 		line = getLineSegment();
 	}
 
 	const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')?.exports;
 	if (gitExtension === undefined) {
-		vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(BASE + MASTER + cutPath + line));
+		vscode.commands.executeCommand('vscode.open', makeUrl(cutPath, null, line));
 		return;
 	}
 	const git = gitExtension.getAPI(1);
@@ -81,11 +119,11 @@ function openAtRevision(arg: CommandArg, includeLineNumber: boolean) {
 		if (repo) {
 			repo.log().then((commits: Commit[]) => {
 				let latest = commits[0];
-				vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(BASE + latest.hash + cutPath + line));
+				vscode.commands.executeCommand('vscode.open', makeUrl(cutPath, latest.hash, line));
 			});
 		} else {
 			console.warn("could not open repo! using master instead.");
-			vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(BASE + MASTER + cutPath + line));
+			vscode.commands.executeCommand('vscode.open', makeUrl(cutPath, null, line));
 		}
 	} else {
 		printFuchsiaRootError();
@@ -94,11 +132,11 @@ function openAtRevision(arg: CommandArg, includeLineNumber: boolean) {
 
 function openAtMaster(arg: CommandArg, includeLineNumber: boolean) {
 	let cutPath = getPathSegment(arg);
-	let line = "";
+	let line: string | null = null;
 	if (includeLineNumber) {
 		line = getLineSegment();
 	}
-	vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(BASE + MASTER + cutPath + line));
+	vscode.commands.executeCommand('vscode.open', makeUrl(cutPath, null, line));
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -106,16 +144,28 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevision', (arg) => {
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionGitiles', (arg) => {
 		openAtRevision(arg, true);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionFromExplorer', (arg) => {
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionFromExplorerGitiles', (arg) => {
 		openAtRevision(arg, false);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMaster', (arg) => {
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterGitiles', (arg) => {
 		openAtMaster(arg, true);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterFromExplorer', (arg) => {
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterFromExplorerGitiles', (arg) => {
+		openAtMaster(arg, false);
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionOsscs', (arg) => {
+		openAtRevision(arg, true);
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionFromExplorerOsscs', (arg) => {
+		openAtRevision(arg, false);
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterOsscs', (arg) => {
+		openAtMaster(arg, true);
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterFromExplorerOsscs', (arg) => {
 		openAtMaster(arg, false);
 	}));
 }

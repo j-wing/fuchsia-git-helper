@@ -1,10 +1,10 @@
 {
 	"name": "fuchsia-git-helper",
 	"displayName": "Fuchsia.git Helper",
-	"description": "Adds 'Open in Gitiles' options to the context menu",
+	"description": "Adds 'Open in ...' options to the context menu",
 	"publisher": "jwing",
 	"repository": "https://github.com/jordonwii/fuchsia-git-helper",
-	"version": "1.3.1",
+	"version": "1.4.0",
 	"engines": {
 		"vscode": "^1.45.0"
 	},
@@ -12,46 +12,86 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:fuchsia-git-helper.openAtRevision",
-		"onCommand:fuchsia-git-helper.openAtMaster",
-		"onCommand:fuchsia-git-helper.openAtRevisionFromExplorer",
-		"onCommand:fuchsia-git-helper.openAtMasterFromExplorer"
+		"onCommand:fuchsia-git-helper.openAtRevisionGitiles",
+		"onCommand:fuchsia-git-helper.openAtMasterGitiles",
+		"onCommand:fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
+		"onCommand:fuchsia-git-helper.openAtMasterFromExplorerGitiles",
+		"onCommand:fuchsia-git-helper.openAtRevisionOsscs",
+		"onCommand:fuchsia-git-helper.openAtMasterOsscs",
+		"onCommand:fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
+		"onCommand:fuchsia-git-helper.openAtMasterFromExplorerOsscs"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "fuchsia-git-helper.openAtRevision",
+				"command": "fuchsia-git-helper.openAtRevisionGitiles",
 				"title": "Open in Gitiles (current revision)"
 			},
 			{
-				"command": "fuchsia-git-helper.openAtMaster",
+				"command": "fuchsia-git-helper.openAtRevisionOsscs",
+				"title": "Open in OSS Code Search (current revision)"
+			},
+			{
+				"command": "fuchsia-git-helper.openAtMasterGitiles",
 				"title": "Open in Gitiles (master)"
 			},
 			{
-				"command": "fuchsia-git-helper.openAtRevisionFromExplorer",
+				"command": "fuchsia-git-helper.openAtMasterOsscs",
+				"title": "Open in OSS Code Search (master)"
+			},
+			{
+				"command": "fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
 				"title": "Open in Gitiles (current revision)"
 			},
 			{
-				"command": "fuchsia-git-helper.openAtMasterFromExplorer",
+				"command": "fuchsia-git-helper.openAtMasterFromExplorerGitiles",
 				"title": "Open in Gitiles (master)"
+			},
+			{
+				"command": "fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
+				"title": "Open in OSS Code Search (current revision)"
+			},
+			{
+				"command": "fuchsia-git-helper.openAtMasterFromExplorerOsscs",
+				"title": "Open in OSS Code Search (master)"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"command": "fuchsia-git-helper.openAtRevision"
+					"command": "fuchsia-git-helper.openAtRevisionGitiles",
+					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
 				},
 				{
-					"command": "fuchsia-git-helper.openAtMaster"
+					"command": "fuchsia-git-helper.openAtRevisionOsscs",
+					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
+				},
+				{
+					"command": "fuchsia-git-helper.openAtMasterGitiles",
+					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
+				},
+				{
+					"command": "fuchsia-git-helper.openAtMasterOsscs",
+					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
 				}
 			],
 			"explorer/context": [
 				{
-					"command": "fuchsia-git-helper.openAtRevisionFromExplorer"
+					"command": "fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
+					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
 				},
 				{
-					"command": "fuchsia-git-helper.openAtMasterFromExplorer"
+					"command": "fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
+					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
+				},
+				{
+					"command": "fuchsia-git-helper.openAtMasterFromExplorerGitiles",
+					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
+				},
+				{
+					"command": "fuchsia-git-helper.openAtMasterFromExplorerOsscs",
+					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
 				}
 			],
 			"commandPalette": [
@@ -74,7 +114,16 @@
 						"null"
 					],
 					"default": null,
-					"description": "Optional path to your fuchsia.git root. You should set this value if your workspace root is not fuchsia.git."
+					"description": "Optional absolute path to your fuchsia.git root. You should set this value if your workspace root is not fuchsia.git."
+				},
+
+				"fuchsia-git-helper.codeViewer": {
+					"type": "string",
+					"default": "osscs",
+					"enum": [
+						"osscs",
+						"gitiles"
+					]
 				}
 			}
 		}
