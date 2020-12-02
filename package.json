@@ -4,7 +4,7 @@
 	"description": "Adds 'Open in ...' options to the context menu",
 	"publisher": "jwing",
 	"repository": "https://github.com/jordonwii/fuchsia-git-helper",
-	"version": "1.4.0",
+	"version": "1.4.1",
 	"engines": {
 		"vscode": "^1.45.0"
 	},
@@ -116,7 +116,6 @@
 					"default": null,
 					"description": "Optional absolute path to your fuchsia.git root. You should set this value if your workspace root is not fuchsia.git."
 				},
-
 				"fuchsia-git-helper.codeViewer": {
 					"type": "string",
 					"default": "osscs",
