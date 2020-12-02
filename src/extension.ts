@@ -2,11 +2,14 @@
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import { allowedNodeEnvironmentFlags } from 'process';
 import * as vscode from 'vscode';
 import { Commit, GitExtension } from "./git.d";
 
 const BASE = "https://fuchsia.googlesource.com/fuchsia/+/";
 const MASTER = "refs/heads/master";
+const CONFIG_ROOT = "fuchsia-git-helper";
+const FUCHSIA_ROOT_SETTING = "fuchsiaRoot";
 
 // The object received when the extension is called from context-menu / right click
 type ContextMenuCommandArg = {
@@ -17,8 +20,29 @@ type ContextMenuCommandArg = {
 // from the command palette, we get an unedfined argument
 type CommandArg = ContextMenuCommandArg | undefined;
 
+function printFuchsiaRootError() {
+	console.error("couldn't find fuchsia root! try setting the", CONFIG_ROOT + "." + FUCHSIA_ROOT_SETTING, "setting.");
+}
+
+function getRoot(): vscode.Uri | undefined {
+	let root: string | null | undefined = vscode.workspace.getConfiguration(CONFIG_ROOT).get(FUCHSIA_ROOT_SETTING);
+	if (root) {
+		return vscode.Uri.parse(root);
+	}
+
+	if (vscode.workspace.workspaceFolders !== undefined) {
+		// Try to find a top-level directory named "fuchsia"
+		for (let dir of vscode.workspace.workspaceFolders) {
+			if (dir.name == "fuchsia") {
+				return dir.uri;
+			}
+		}
+	}
+	printFuchsiaRootError();
+}
+
 function getPathSegment(arg: CommandArg) {
-	let root = vscode.workspace.rootPath;
+	let root = getRoot()?.fsPath;
 
 	let fullPath =
 		arg?.path || // Try to use the passed in path, if available
@@ -51,10 +75,21 @@ function openAtRevision(arg: CommandArg, includeLineNumber: boolean) {
 		return;
 	}
 	const git = gitExtension.getAPI(1);
-	git.repositories[0].log().then((commits: Commit[]) => {
-		let latest = commits[0];
-		vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(BASE + latest.hash + cutPath + line));
-	});
+	let root = getRoot();
+	if (root !== undefined) {
+		let repo = git.getRepository(root);
+		if (repo) {
+			repo.log().then((commits: Commit[]) => {
+				let latest = commits[0];
+				vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(BASE + latest.hash + cutPath + line));
+			});
+		} else {
+			console.warn("could not open repo! using master instead.");
+			vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(BASE + MASTER + cutPath + line));
+		}
+	} else {
+		printFuchsiaRootError();
+	}
 }
 
 function openAtMaster(arg: CommandArg, includeLineNumber: boolean) {
