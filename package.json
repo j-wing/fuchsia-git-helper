@@ -4,7 +4,7 @@
 	"description": "Adds 'Open in Gitiles' options to the context menu",
 	"publisher": "jwing",
 	"repository": "https://github.com/jordonwii/fuchsia-git-helper",
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"engines": {
 		"vscode": "^1.45.0"
 	},
@@ -69,7 +69,10 @@
 			"title": "Fuchsia.git Helper",
 			"properties": {
 				"fuchsia-git-helper.fuchsiaRoot": {
-					"type": ["string", "null"],
+					"type": [
+						"string",
+						"null"
+					],
 					"default": null,
 					"description": "Optional path to your fuchsia.git root. You should set this value if your workspace root is not fuchsia.git."
 				}
