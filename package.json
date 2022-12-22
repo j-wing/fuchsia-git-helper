@@ -93,16 +93,6 @@
 					"command": "fuchsia-git-helper.openAtMasterFromExplorerOsscs",
 					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
 				}
-			],
-			"commandPalette": [
-				{
-					"command": "fuchsia-git-helper.openAtRevisionFromExplorer",
-					"when": "false"
-				},
-				{
-					"command": "fuchsia-git-helper.openAtMasterFromExplorer",
-					"when": "false"
-				}
 			]
 		},
 		"configuration": {
