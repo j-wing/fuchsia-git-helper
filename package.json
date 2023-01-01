@@ -13,13 +13,13 @@
 	],
 	"activationEvents": [
 		"onCommand:fuchsia-git-helper.openAtRevisionGitiles",
-		"onCommand:fuchsia-git-helper.openAtMasterGitiles",
+		"onCommand:fuchsia-git-helper.openAtMainGitiles",
 		"onCommand:fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
-		"onCommand:fuchsia-git-helper.openAtMasterFromExplorerGitiles",
+		"onCommand:fuchsia-git-helper.openAtMainFromExplorerGitiles",
 		"onCommand:fuchsia-git-helper.openAtRevisionOsscs",
-		"onCommand:fuchsia-git-helper.openAtMasterOsscs",
+		"onCommand:fuchsia-git-helper.openAtMainOsscs",
 		"onCommand:fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
-		"onCommand:fuchsia-git-helper.openAtMasterFromExplorerOsscs"
+		"onCommand:fuchsia-git-helper.openAtMainFromExplorerOsscs"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -33,28 +33,28 @@
 				"title": "Open in OSS Code Search (current revision)"
 			},
 			{
-				"command": "fuchsia-git-helper.openAtMasterGitiles",
-				"title": "Open in Gitiles (master)"
+				"command": "fuchsia-git-helper.openAtMainGitiles",
+				"title": "Open in Gitiles (main)"
 			},
 			{
-				"command": "fuchsia-git-helper.openAtMasterOsscs",
-				"title": "Open in OSS Code Search (master)"
+				"command": "fuchsia-git-helper.openAtMainOsscs",
+				"title": "Open in OSS Code Search (main)"
 			},
 			{
 				"command": "fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
 				"title": "Open in Gitiles (current revision)"
 			},
 			{
-				"command": "fuchsia-git-helper.openAtMasterFromExplorerGitiles",
-				"title": "Open in Gitiles (master)"
+				"command": "fuchsia-git-helper.openAtMainFromExplorerGitiles",
+				"title": "Open in Gitiles (main)"
 			},
 			{
 				"command": "fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
 				"title": "Open in OSS Code Search (current revision)"
 			},
 			{
-				"command": "fuchsia-git-helper.openAtMasterFromExplorerOsscs",
-				"title": "Open in OSS Code Search (master)"
+				"command": "fuchsia-git-helper.openAtMainFromExplorerOsscs",
+				"title": "Open in OSS Code Search (main)"
 			}
 		],
 		"menus": {
@@ -68,11 +68,11 @@
 					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
 				},
 				{
-					"command": "fuchsia-git-helper.openAtMasterGitiles",
+					"command": "fuchsia-git-helper.openAtMainGitiles",
 					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
 				},
 				{
-					"command": "fuchsia-git-helper.openAtMasterOsscs",
+					"command": "fuchsia-git-helper.openAtMainOsscs",
 					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
 				}
 			],
@@ -86,11 +86,11 @@
 					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
 				},
 				{
-					"command": "fuchsia-git-helper.openAtMasterFromExplorerGitiles",
+					"command": "fuchsia-git-helper.openAtMainFromExplorerGitiles",
 					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
 				},
 				{
-					"command": "fuchsia-git-helper.openAtMasterFromExplorerOsscs",
+					"command": "fuchsia-git-helper.openAtMainFromExplorerOsscs",
 					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
 				}
 			],
@@ -100,7 +100,7 @@
 					"when": "false"
 				},
 				{
-					"command": "fuchsia-git-helper.openAtMasterFromExplorer",
+					"command": "fuchsia-git-helper.openAtMainFromExplorer",
 					"when": "false"
 				}
 			]

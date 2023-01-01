@@ -7,9 +7,9 @@ import * as vscode from 'vscode';
 import { Commit, GitExtension } from "./git.d";
 
 const GITILES_BASE = "https://fuchsia.googlesource.com/fuchsia/+/";
-const GITILES_MASTER = "refs/heads/master";
+const GITILES_MAIN = "refs/heads/main";
 
-const OSSCS_BASE = "https://cs.opensource.google/fuchsia/fuchsia/+/master:";
+const OSSCS_BASE = "https://cs.opensource.google/fuchsia/fuchsia/+/main:";
 
 const CONFIG_ROOT = "fuchsia-git-helper";
 const FUCHSIA_ROOT_SETTING = "fuchsiaRoot";
@@ -32,7 +32,7 @@ function printFuchsiaRootError() {
 
 function makeGitilesUrl(path: string, hash: string | null, line: string | null): vscode.Uri {
 	if (hash === null) {
-		hash = GITILES_MASTER;
+		hash = GITILES_MAIN;
 	}
 
 	let uri = vscode.Uri.parse(GITILES_BASE + hash + path);
@@ -122,7 +122,7 @@ function openAtRevision(arg: CommandArg, includeLineNumber: boolean) {
 				vscode.commands.executeCommand('vscode.open', makeUrl(cutPath, latest.hash, line));
 			});
 		} else {
-			console.warn("could not open repo! using master instead.");
+			console.warn("could not open repo! using main instead.");
 			vscode.commands.executeCommand('vscode.open', makeUrl(cutPath, null, line));
 		}
 	} else {
@@ -130,7 +130,7 @@ function openAtRevision(arg: CommandArg, includeLineNumber: boolean) {
 	}
 }
 
-function openAtMaster(arg: CommandArg, includeLineNumber: boolean) {
+function openAtMain(arg: CommandArg, includeLineNumber: boolean) {
 	let cutPath = getPathSegment(arg);
 	let line: string | null = null;
 	if (includeLineNumber) {
@@ -150,11 +150,11 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionFromExplorerGitiles', (arg) => {
 		openAtRevision(arg, false);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterGitiles', (arg) => {
-		openAtMaster(arg, true);
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMainGitiles', (arg) => {
+		openAtMain(arg, true);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterFromExplorerGitiles', (arg) => {
-		openAtMaster(arg, false);
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMainFromExplorerGitiles', (arg) => {
+		openAtMain(arg, false);
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionOsscs', (arg) => {
 		openAtRevision(arg, true);
@@ -162,11 +162,11 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtRevisionFromExplorerOsscs', (arg) => {
 		openAtRevision(arg, false);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterOsscs', (arg) => {
-		openAtMaster(arg, true);
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMainOsscs', (arg) => {
+		openAtMain(arg, true);
 	}));
-	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMasterFromExplorerOsscs', (arg) => {
-		openAtMaster(arg, false);
+	context.subscriptions.push(vscode.commands.registerCommand('fuchsia-git-helper.openAtMainFromExplorerOsscs', (arg) => {
+		openAtMain(arg, false);
 	}));
 }
 
