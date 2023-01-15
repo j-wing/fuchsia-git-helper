@@ -1,151 +1,159 @@
 {
-	"name": "fuchsia-git-helper",
-	"displayName": "Fuchsia.git Helper",
-	"description": "Adds 'Open in ...' options to the context menu",
-	"publisher": "jwing",
-	"repository": "https://github.com/jordonwii/fuchsia-git-helper",
-	"version": "1.4.1",
-	"engines": {
-		"vscode": "^1.45.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:fuchsia-git-helper.openAtRevisionGitiles",
-		"onCommand:fuchsia-git-helper.openAtMainGitiles",
-		"onCommand:fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
-		"onCommand:fuchsia-git-helper.openAtMainFromExplorerGitiles",
-		"onCommand:fuchsia-git-helper.openAtRevisionOsscs",
-		"onCommand:fuchsia-git-helper.openAtMainOsscs",
-		"onCommand:fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
-		"onCommand:fuchsia-git-helper.openAtMainFromExplorerOsscs"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "fuchsia-git-helper.openAtRevisionGitiles",
-				"title": "Open in Gitiles (current revision)"
-			},
-			{
-				"command": "fuchsia-git-helper.openAtRevisionOsscs",
-				"title": "Open in OSS Code Search (current revision)"
-			},
-			{
-				"command": "fuchsia-git-helper.openAtMainGitiles",
-				"title": "Open in Gitiles (main)"
-			},
-			{
-				"command": "fuchsia-git-helper.openAtMainOsscs",
-				"title": "Open in OSS Code Search (main)"
-			},
-			{
-				"command": "fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
-				"title": "Open in Gitiles (current revision)"
-			},
-			{
-				"command": "fuchsia-git-helper.openAtMainFromExplorerGitiles",
-				"title": "Open in Gitiles (main)"
-			},
-			{
-				"command": "fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
-				"title": "Open in OSS Code Search (current revision)"
-			},
-			{
-				"command": "fuchsia-git-helper.openAtMainFromExplorerOsscs",
-				"title": "Open in OSS Code Search (main)"
-			}
-		],
-		"menus": {
-			"editor/context": [
-				{
-					"command": "fuchsia-git-helper.openAtRevisionGitiles",
-					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
-				},
-				{
-					"command": "fuchsia-git-helper.openAtRevisionOsscs",
-					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
-				},
-				{
-					"command": "fuchsia-git-helper.openAtMainGitiles",
-					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
-				},
-				{
-					"command": "fuchsia-git-helper.openAtMainOsscs",
-					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
-				}
-			],
-			"explorer/context": [
-				{
-					"command": "fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
-					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
-				},
-				{
-					"command": "fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
-					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
-				},
-				{
-					"command": "fuchsia-git-helper.openAtMainFromExplorerGitiles",
-					"when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
-				},
-				{
-					"command": "fuchsia-git-helper.openAtMainFromExplorerOsscs",
-					"when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
-				}
-			],
-			"commandPalette": [
-				{
-					"command": "fuchsia-git-helper.openAtRevisionFromExplorer",
-					"when": "false"
-				},
-				{
-					"command": "fuchsia-git-helper.openAtMainFromExplorer",
-					"when": "false"
-				}
-			]
-		},
-		"configuration": {
-			"title": "Fuchsia.git Helper",
-			"properties": {
-				"fuchsia-git-helper.fuchsiaRoot": {
-					"type": [
-						"string",
-						"null"
-					],
-					"default": null,
-					"description": "Optional absolute path to your fuchsia.git root. You should set this value if your workspace root is not fuchsia.git."
-				},
-				"fuchsia-git-helper.codeViewer": {
-					"type": "string",
-					"default": "osscs",
-					"enum": [
-						"osscs",
-						"gitiles"
-					]
-				}
-			}
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts,d.ts",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/vscode": "^1.45.0",
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^7.0.2",
-		"@types/node": "^13.11.0",
-		"eslint": "^6.8.0",
-		"@typescript-eslint/parser": "^2.30.0",
-		"@typescript-eslint/eslint-plugin": "^2.30.0",
-		"glob": "^7.1.6",
-		"mocha": "^7.1.2",
-		"typescript": "^3.8.3",
-		"vscode-test": "^1.3.0"
-	}
+  "name": "fuchsia-git-helper",
+  "displayName": "Fuchsia.git Helper",
+  "description": "Adds 'Open in ...' options to the context menu",
+  "publisher": "jwing",
+  "repository": "https://github.com/jordonwii/fuchsia-git-helper",
+  "version": "1.4.1",
+  "engines": {
+    "vscode": "^1.45.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:fuchsia-git-helper.openAtRevisionGitiles",
+    "onCommand:fuchsia-git-helper.openAtMainGitiles",
+    "onCommand:fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
+    "onCommand:fuchsia-git-helper.openAtMainFromExplorerGitiles",
+    "onCommand:fuchsia-git-helper.openAtRevisionOsscs",
+    "onCommand:fuchsia-git-helper.openAtMainOsscs",
+    "onCommand:fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
+    "onCommand:fuchsia-git-helper.openAtMainFromExplorerOsscs"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "fuchsia-git-helper.openAtRevisionGitiles",
+        "title": "Open in Gitiles (current revision)"
+      },
+      {
+        "command": "fuchsia-git-helper.openAtRevisionOsscs",
+        "title": "Open in OSS Code Search (current revision)"
+      },
+      {
+        "command": "fuchsia-git-helper.openAtMainGitiles",
+        "title": "Open in Gitiles (main)"
+      },
+      {
+        "command": "fuchsia-git-helper.openAtMainOsscs",
+        "title": "Open in OSS Code Search (main)"
+      },
+      {
+        "command": "fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
+        "title": "Open in Gitiles (current revision)"
+      },
+      {
+        "command": "fuchsia-git-helper.openAtMainFromExplorerGitiles",
+        "title": "Open in Gitiles (main)"
+      },
+      {
+        "command": "fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
+        "title": "Open in OSS Code Search (current revision)"
+      },
+      {
+        "command": "fuchsia-git-helper.openAtMainFromExplorerOsscs",
+        "title": "Open in OSS Code Search (main)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "fuchsia-git-helper.openAtRevisionGitiles",
+          "when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtRevisionOsscs",
+          "when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtMainGitiles",
+          "when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtMainOsscs",
+          "when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
+          "when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
+          "when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtMainFromExplorerGitiles",
+          "when": "config.fuchsia-git-helper.codeViewer == 'gitiles'"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtMainFromExplorerOsscs",
+          "when": "config.fuchsia-git-helper.codeViewer == 'osscs'"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "fuchsia-git-helper.openAtRevisionFromExplorerGitiles",
+          "when": "false"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtRevisionFromExplorerOsscs",
+          "when": "false"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtMainFromExplorerGitiles",
+          "when": "false"
+        },
+        {
+          "command": "fuchsia-git-helper.openAtMainFromExplorerOsscs",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Fuchsia.git Helper",
+      "properties": {
+        "fuchsia-git-helper.fuchsiaRoot": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Optional absolute path to your fuchsia.git root. You should set this value if your workspace root is not fuchsia.git."
+        },
+        "fuchsia-git-helper.codeViewer": {
+          "type": "string",
+          "default": "osscs",
+          "enum": [
+            "osscs",
+            "gitiles"
+          ]
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts,d.ts",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.45.0",
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.11.0",
+    "eslint": "^6.8.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "glob": "^7.1.6",
+    "mocha": "^7.1.2",
+    "typescript": "^3.8.3",
+    "vscode-test": "^1.3.0"
+  }
 }
